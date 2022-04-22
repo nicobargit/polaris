@@ -1,0 +1,20 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: tensorserving-ingress
+spec:
+  ingressClassName: nginx
+  rules:
+  - hosts:
+    - ts.example.com
+  rules:
+  - host: ts.example.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: tensorserving-svc
+            port:
+              number: 80

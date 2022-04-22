@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tensorserving
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: tensorserving
+  template:
+    metadata:
+      labels:
+        app: tensorserving
+    spec:
+      containers:
+      - name: tensorserving
+        image: nicolobartelucci/objectdetectionserving:latest
+        ports:
+        - containerPort: 8501
+        resources:
+         # requests:
+           # memory: "64Mi"
+           # cpu: "250m"
+          limits:
+           #  memory: "128Mi"
+            cpu: "2"
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: tensorserving-svc
+spec:
+  ports:
+  - port: 80
+    targetPort: 8501
+    protocol: TCP
+    name: http
+  selector:
+    app: tensorserving

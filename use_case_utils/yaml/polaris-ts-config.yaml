@@ -1,0 +1,25 @@
+apiVersion: slo.polaris-slo-cloud.github.io/v1
+kind: LatencySloMapping
+metadata:
+  name: latencyslomapping-tensorserving
+spec:
+  targetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: tensorserving
+  elasticityStrategy:
+    apiVersion: elasticity.polaris-slo-cloud.github.io/v1
+    kind: HorizontalElasticityStrategy
+  sloConfig:
+    targetLatency: 600
+    responseTimeThresholdMs: 600
+    quantile: 95
+
+  stabilizationWindow:
+    scaleUpSeconds: 45
+    scaleDownSeconds: 20
+
+  # Optional static configuration
+  staticElasticityStrategyConfig:
+    minReplicas: 1
+    maxReplicas: 20
